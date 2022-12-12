@@ -15,5 +15,7 @@ public class CaraLibro {
         
         XeradorMenus on = new XeradorMenus();
         on.mostrarMenuInicial();
+        
+        //hola proyecto te estoy haciendo lo que quiero uwu jsjsjsjsjsjsjs ahora vuelvo voy a pegarme un tiro adios y gracias
     }
 }

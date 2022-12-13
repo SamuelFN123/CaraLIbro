@@ -20,16 +20,16 @@ public class XeradorMenus {
             System.out.println("¿No tienes una cuenta todavía?");
             System.out.println("sí quieres crear una cuenta escribe 2");
             eleccion = num.nextInt();
-            switch (eleccion) {
-                case 1 ->
-                    iniciarSesion();
-                case 2 ->
-                    crearPerfil();
-                default ->
-                    System.out.println("Ese número no es válido");
-            }
+        } while (eleccion < 1 || eleccion > 2);
 
-        } while (eleccion != 1 && eleccion != 2);
+        switch (eleccion) {
+            case 1 ->
+                iniciarSesion();
+            case 2 ->
+                crearPerfil();
+            default ->
+                System.out.println("Ese número no es válido");
+        }
 
     }
 
@@ -45,114 +45,145 @@ public class XeradorMenus {
             System.out.println("5.Mensaxes: " + perfil.getMensaxes().size());
             System.out.println("6.Cerrar sesión");
             eleccion = num.nextInt();
-            switch (eleccion) {
-                case 1 ->
-                    cambiarEstado(perfil);                      //hecho
-                case 2 ->
-                    mostrarBiografia(perfil);                   //falta crear publicacion ¿y nada mas?
-                case 3 ->
-                    mostrarSolicitudesDeAmizade(perfil);        //hecho
-                case 4 ->
-                    mostrarListaAmigos(perfil);                 //falta bio
-                case 5 ->
-                    mostrarMensaxes(perfil);                    //hecho
-                case 6 ->
-                    pecharSesion(perfil);                       //hecho
-                default -> {
-                }
-            }
-
         } while (eleccion < 1 || eleccion > 6);
 
+        switch (eleccion) {
+            case 1 ->
+                cambiarEstado(perfil);                      //hecho
+            case 2 ->
+                mostrarBiografia(perfil);                   //hecho
+            case 3 ->
+                mostrarSolicitudesDeAmizade(perfil);        //hecho
+            case 4 ->
+                mostrarListaAmigos(perfil);                 //problema
+            case 5 ->
+                mostrarMensaxes(perfil);                    //hecho
+            case 6 ->
+                pecharSesion(perfil);                       //hecho
+            default -> {
+            }
+        }
     }
 
     public void mostrarBiografia(Perfil perfil) {
         int eleccion;
         Scanner num = new Scanner(System.in);
-        System.out.println("Biografia");
-        for (int i = perfil.getPublicacions().size(); i > 0; i--) {
-            //recorre publicaciones ↑↑
-            
-            if (perfil.getPublicacions().get(i).getAutor().getNome().equals(perfil.getNome())) {
-                // ↑↑si son tuyas
-                
-                System.out.println("Ti escribiches: ");
-                
+        do {
+            System.out.println("Biografia");
+            System.out.println("0 para escribir una publicación, 1 para ver las publicaciones");
+            eleccion = num.nextInt();
+        } while (eleccion < 0 || eleccion > 1);
+
+        if (eleccion == 0) {
+            crearPublicacion(perfil);
+        } else {
+
+            for (int i = perfil.getPublicacions().size(); i > 0; i--) {
+                //recorre publicaciones ↑↑
+
+                if (perfil.getPublicacions().get(i - 1).getAutor().getNome().equals(perfil.getNome())) {
+                    // ↑↑si son tuyas
+
+                    System.out.println("Ti escribiches: ");
+
+                } else {
+
+                    // ↓↓si son de otro
+                    System.out.println(perfil.getPublicacions().get(i - 1).getAutor().getNome() + " escribiu: ");
+                }
+
+                //↓↓ fecha
+                System.out.println(perfil.getPublicacions().get(i - 1).getData());
+                //↓↓ texto
+                System.out.println((i) + ". " + perfil.getPublicacions().get(i - 1).getTexto());
+
+                //recorrer comentarios ↓↓
+                if (perfil.getPublicacions().get(i - 1).getComentarios().isEmpty()) {
+                    System.out.println("no hay comentarios");
+                } else {
+                    for (int j = perfil.getPublicacions().get(i - 1).getComentarios().size(); j > 0; j--) {
+                        //nombre ↓↓
+                        System.out.println(perfil.getPublicacions().get(i - 1).getComentarios().get(j - 1).getAutor().getNome());
+                        //texto ↓↓
+                        System.out.println(perfil.getPublicacions().get(i - 1).getComentarios().get(j - 1).getTexto());
+                    }
+                }
+
+                if (perfil.getPublicacions().get(i - 1).getMeGusta().isEmpty()) {
+                    System.out.println("Todavía no tiene ningún me gusta");
+                } else {
+                    System.out.println("Tiene " + perfil.getPublicacions().get(i - 1).getMeGusta().size() + " me gusta");
+                }     //numero "me gusta" ↑↑
+
+            }
+            do {
+                System.out.println("Número para gestionar publicación, 0 para volver al menú principal");
+                eleccion = num.nextInt();
+            } while (eleccion > perfil.getPublicacions().size());
+
+            if (eleccion == 0) {
+                mostrarMenuPrincipal(perfil);
             } else {
-                
-                // ↓↓si son de otro
-                System.out.println(perfil.getPublicacions().get(i).getAutor().getNome() + " escribiu: ");
+                gestionPublicacion(perfil, perfil.getPublicacions().get(eleccion - 1));
             }
-            
-            //↓↓ fecha
-            System.out.println(perfil.getPublicacions().get(i).getData());
-            //↓↓ texto
-            System.out.println((i + 1) + ". " + perfil.getPublicacions().get(i).getTexto());
-            
-            //recorrer comentarios ↓↓
-            for (int j = perfil.getPublicacions().get(i).getComentarios().size(); j >= 0; j++) {
-                //nombre ↓↓
-                System.out.println(perfil.getPublicacions().get(i).getComentarios().get(j).getAutor().getNome());
-                //texto ↓↓
-                System.out.println(perfil.getPublicacions().get(i).getComentarios().get(j).getTexto());
-            }
-            System.out.println("Tiene " + perfil.getPublicacions().get(i).getMeGusta().size() + " me gusta");
-        }   //numero "me gusta" ↑↑
-        
-        System.out.println("Número para gestionar publicación, 0 para volver al menú principal");
-        eleccion = num.nextInt();
-        
-        if(eleccion==0){
-            mostrarMenuPrincipal(perfil);
-        } else{
-            gestionPublicacion(perfil, perfil.getPublicacions().get(eleccion-1));
         }
-        
 
     }
 
-    private void gestionPublicacion(Perfil perfil, Publicacion publicacion){
+    private void crearPublicacion(Perfil autor) {
+        String texto;
+        Scanner leer = new Scanner(System.in);
+        System.out.println("Que quieres escribir");
+        texto = leer.nextLine();
+        Publicacion pub = new Publicacion(autor, texto);
+        autor.getPublicacions().add(pub);
+        mostrarMenuPrincipal(autor);
+    }
+
+    private void gestionPublicacion(Perfil perfil, Publicacion publicacion) {
         int eleccion;
         Scanner num = new Scanner(System.in);
-        System.out.println("Pulse 1 para escribir un comentario, 2 para darle like, 0 para volver al menú principal");
         do {
+            System.out.println("Pulse 1 para darle 'me gusta', 2 para escribir un comentario, 0 para volver al menú principal");
             eleccion = num.nextInt();
-            switch (eleccion) {
-                case 1 -> {
-                    comprobarMeGusta(perfil,publicacion);
-                    }
-                case 2 -> {
-                    escribirComentario(publicacion, perfil); }
-                case 0 ->
-                    mostrarMenuPrincipal(perfil);
-                default -> {
-                }
+        } while (eleccion < 0 || eleccion > 2);
+
+        switch (eleccion) {
+            case 1 -> {
+                comprobarMeGusta(perfil, publicacion);
             }
-        } while (eleccion < 3 || eleccion > 5);
-        
+            case 2 -> {
+                escribirComentario(publicacion, perfil);
+            }
+            case 0 ->
+                mostrarMenuPrincipal(perfil);
+            default -> {
+            }
+        }
     }
-    
+
     public void mostrarSolicitudesDeAmizade(Perfil perfil) {
         int eleccion;
         Scanner num = new Scanner(System.in);
-        System.out.println("Solicitudes de amizade");
-        System.out.println("Tes " + perfil.getSolicitudes().size() + " solicitudes");
-        System.out.println("Para ver las solicitudes pulse 3");
-        System.out.println("Para hacer una solicitud pulse 4");
-        System.out.println("Pulse 5 para volver");
         do {
+            System.out.println("Solicitudes de amizade");
+            System.out.println("Tes " + perfil.getSolicitudes().size() + " solicitudes");
+            System.out.println("Para ver las solicitudes pulse 1");
+            System.out.println("Para hacer una solicitud pulse 2");
+            System.out.println("Pulse 3 para volver");
             eleccion = num.nextInt();
-            switch (eleccion) {
-                case 3 ->
-                    gestionSolicitudes(perfil);
-                case 4 ->
-                    crearSolicitude(perfil);
-                case 5 ->
-                    mostrarMenuPrincipal(perfil);
-                default -> {
-                }
+        } while (eleccion < 1 || eleccion > 3);
+
+        switch (eleccion) {
+            case 1 ->
+                gestionSolicitudes(perfil);
+            case 2 ->
+                crearSolicitude(perfil);
+            case 3 ->
+                mostrarMenuPrincipal(perfil);
+            default -> {
             }
-        } while (eleccion < 3 || eleccion > 5);
+        }
     }
 
     private void gestionSolicitudes(Perfil perfil) {
@@ -160,17 +191,21 @@ public class XeradorMenus {
         Scanner num = new Scanner(System.in);
         for (int i = 0; i < perfil.getSolicitudes().size(); i++) {
             System.out.println("Tienes una solicitud de: " + perfil.getSolicitudes().get(i).getNome());
-            System.out.println("Pulsa 1 para aceptarla o 2 para rechazarla");
-            eleccion = num.nextInt();
+            do {
+                System.out.println("Pulsa 1 para aceptarla o 2 para rechazarla");
+                eleccion = num.nextInt();
+            } while (eleccion < 1 || eleccion > 2);
+
             switch (eleccion) {
                 case 1 -> {
                     perfil.aceptarSolicitudeAmizade(perfil.getSolicitudes().get(i));
                     perfil.getSolicitudes().get(i).engadirAmigo(perfil);
                 }
-                case 2 ->
+                case 2 -> {
                     perfil.rexeitarSolicitudeAmizade(perfil.getSolicitudes().get(i));
-                default ->
-                    System.out.println("La solicitud permanecerá sin aceptar");
+                }
+                default -> {
+                }
             }
         }
     }
@@ -184,18 +219,52 @@ public class XeradorMenus {
             System.out.println("Solicitude enviada a: " + CaraLibroBD.buscarPerfil(nome).getNome());
         } else {
             System.out.println("Ese perfil no existe");
+            int eleccion;
+            do {
+                System.out.println("1 para volver a intentar, 2 para volver menu principal");
+                eleccion = leer.nextInt();
+            } while (eleccion < 1 || eleccion > 2);
+
+            if (eleccion == 1) {
+                crearSolicitude(perfil);
+            }
+            if (eleccion == 2) {
+                mostrarMenuPrincipal(perfil);
+            }
         }
     }
 
     public void mostrarListaAmigos(Perfil perfil) {
         Scanner num = new Scanner(System.in);
         System.out.println("Amigos");
-        for (int i = 0; i < perfil.getAmigos().size(); i++) {
-            System.out.println((i + 1) + ". " + perfil.getAmigos().get(i).getNome());
-            System.out.println(perfil.getAmigos().get(i).getEstado());
+
+        if (perfil.getAmigos().isEmpty()) {
+            System.out.println("Por ahora no tienes amigos");
+            mostrarMenuPrincipal(perfil);
+        } else {
+
+            for (int i = 0; i < perfil.getAmigos().size(); i++) {
+                System.out.println((i + 1) + ". " + perfil.getAmigos().get(i).getNome());
+                System.out.println(perfil.getAmigos().get(i).getEstado());
+            }
+
+            int eleccion;
+            do {
+                System.out.println("Escribe el número para enviar mensaje");
+                eleccion = (num.nextInt() - 1);
+            } while (eleccion <= perfil.getAmigos().size());
+
+            do {
+                System.out.println("Escribe 1 para enviar una mensaje o 2 para ver su biografía");
+
+                eleccion = num.nextInt();
+                if (eleccion == 1) {
+                    escribirMensaxe(perfil, perfil.getAmigos().get(eleccion));
+                } else if (eleccion == 2) {
+                    mostrarBiografia(perfil.getAmigos().get(eleccion));
+                }
+            } while (eleccion < 0 || eleccion > 2);
         }
-        System.out.println("Escribe el número para enviar mensaje");
-        escribirMensaxe(perfil, perfil.getAmigos().get((num.nextInt() - 1)));
     }
 
     public void mostrarMensaxes(Perfil perfil) {
@@ -211,8 +280,12 @@ public class XeradorMenus {
             }
             System.out.println(perfil.getMensaxes().get(i).getTexto());
         }
-        System.out.println("Número para gestionar mensaje, 0 para volver al menú principal");
-        int eleccion = leer.nextInt();
+        int eleccion;
+        do {
+            System.out.println("Número para gestionar mensaje, 0 para volver al menú principal");
+            eleccion = leer.nextInt();
+        } while (eleccion <= perfil.getMensaxes().size());
+
         if (eleccion == 0) {
             mostrarMenuPrincipal(perfil);
         } else {
@@ -223,17 +296,22 @@ public class XeradorMenus {
 
     private void xestionMensaxes(int MensaxeElexido, Perfil perfil) {
         Scanner leer = new Scanner(System.in);
-        System.out.println("Que quieres hacer con el mensaje");
-        System.out.println("1. Marcar como lida");
-        System.out.println("2. Eliminar a mensaxe");
-        System.out.println("3. Responder");
-        switch (leer.nextInt()) {
+        int eleccion;
+        do {
+            System.out.println("Que quieres hacer con el mensaje");
+            System.out.println("1. Marcar como lida");
+            System.out.println("2. Eliminar a mensaxe");
+            System.out.println("3. Responder");
+            eleccion = leer.nextInt();
+        } while (eleccion < 1 || eleccion > 3);
+        
+        switch (eleccion) {
             case 1 -> {
                 marcarMensaxeComoLida(perfil.getMensaxes().get(MensaxeElexido));
                 mostrarMensaxes(perfil);
             }
             case 2 -> {
-                eliminarMensaxe(perfil,perfil.getMensaxes().get(MensaxeElexido));
+                eliminarMensaxe(perfil, perfil.getMensaxes().get(MensaxeElexido));
                 mostrarMensaxes(perfil);
             }
             case 3 -> {
@@ -271,25 +349,46 @@ public class XeradorMenus {
     private void iniciarSesion() {
         Scanner leer = new Scanner(System.in);
         String nome;
+        String contraseña;
         System.out.println("Escribe tu nombre de usuario");
         nome = leer.nextLine();
         System.out.println("Escribe tu contraseña");
-        mostrarMenuPrincipal(CaraLibroBD.obterPerfil(nome, leer.nextLine()));
+        contraseña = leer.nextLine();
+        if (CaraLibroBD.obterPerfil(nome, contraseña) == null) {
+            int eleccion;
+            do {
+                System.out.println("El usuario o contraseña está mal");
+                System.out.println("Pulse 0 para volver a intentar o 1 para volver al menu inicial");
+                eleccion = leer.nextInt();
+                if (eleccion == 0) {
+                    iniciarSesion();
+                } else if (eleccion == 1) {
+                    mostrarMenuInicial();
+                }
+            } while (eleccion < 0 || eleccion > 1);
+        } else {
+            mostrarMenuPrincipal(CaraLibroBD.obterPerfil(nome, contraseña));
+        }
     }
 
     private void cambiarEstado(Perfil perfil) {
         Scanner est = new Scanner(System.in);
         Scanner num = new Scanner(System.in);
         System.out.println(perfil.getEstado());
-        System.out.println("¿Deseas cambiar el estado? 1:Si, 2:No");
-        int eleccion = num.nextInt();
-        if (eleccion == 1) {
-            perfil.setEstado(est.nextLine());
-            mostrarMenuPrincipal(perfil);
-        }
-        if (eleccion == 2) {
-            mostrarMenuPrincipal(perfil);
-        }
+        int eleccion;
+        do {
+            System.out.println("¿Deseas cambiar el estado? 1:Si, 2:No");
+            eleccion = num.nextInt();
+        } while (eleccion < 1 || eleccion > 2);
+            if (eleccion == 1) {
+                System.out.print("Nuevo estado: ");
+                perfil.setEstado(est.nextLine());
+                mostrarMenuPrincipal(perfil);
+            }
+            if (eleccion == 2) {
+                mostrarMenuPrincipal(perfil);
+            }
+        
     }
 
     private void escribirComentario(Publicacion publicacion, Perfil perfil) {
@@ -299,20 +398,21 @@ public class XeradorMenus {
         Comentario comen = new Comentario(patata);
         comen.setAutor(perfil);
         publicacion.engadirComentario(comen);
+        mostrarMenuPrincipal(perfil);
     }
 
-    private void comprobarMeGusta(Perfil autor, Publicacion publicacion){
-        if(publicacion.getAutor().equals(autor)){
+    private void comprobarMeGusta(Perfil autor, Publicacion publicacion) {
+        if (publicacion.getAutor().equals(autor)) {
             System.out.println("No puedes dar me gusta a tu propia pubblicación");
-            gestionPublicacion(autor,publicacion);
-        }else if(publicacion.getMeGusta().contains(autor)){
+            gestionPublicacion(autor, publicacion);
+        } else if (publicacion.getMeGusta().contains(autor)) {
             System.out.println("Ya has hecho me gusta a esta publicación");
-        }else{
+        } else {
             publicacion.setMeGustaTemporal(autor);
             facerMeGusta(publicacion);
         }
     }
-    
+
     private void facerMeGusta(Publicacion publicacion) {
         publicacion.engadirMeGusta(publicacion.getMeGustaTemporal());
     }

@@ -119,7 +119,7 @@ public class XeradorMenus {
             eleccion = num.nextInt();
             switch (eleccion) {
                 case 1 -> {
-                    facerMeGusta(publicacion);
+                    comprobarMeGusta(perfil,publicacion);
                     }
                 case 2 -> {
                     escribirComentario(publicacion, perfil); }
@@ -216,6 +216,7 @@ public class XeradorMenus {
         if (eleccion == 0) {
             mostrarMenuPrincipal(perfil);
         } else {
+            eleccion -= perfil.getMensaxes().size();
             xestionMensaxes(eleccion, perfil);
         }
     }
@@ -232,7 +233,7 @@ public class XeradorMenus {
                 mostrarMensaxes(perfil);
             }
             case 2 -> {
-                perfil.getMensaxes().remove(MensaxeElexido);
+                eliminarMensaxe(perfil,perfil.getMensaxes().get(MensaxeElexido));
                 mostrarMensaxes(perfil);
             }
             case 3 -> {
@@ -329,7 +330,7 @@ public class XeradorMenus {
     }
 
     private void eliminarMensaxe(Perfil perfil, Mensaxe mensaxe) {
-
+        perfil.getMensaxes().remove(mensaxe);
     }
 
 }

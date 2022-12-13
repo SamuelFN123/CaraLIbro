@@ -49,7 +49,7 @@ public class XeradorMenus {
                 case 1 ->
                     cambiarEstado(perfil);                      //hecho
                 case 2 ->
-                    mostrarBiografia(perfil);
+                    mostrarBiografia(perfil);                   //falta crear publicacion ¿y nada mas?
                 case 3 ->
                     mostrarSolicitudesDeAmizade(perfil);        //hecho
                 case 4 ->
@@ -119,7 +119,7 @@ public class XeradorMenus {
             eleccion = num.nextInt();
             switch (eleccion) {
                 case 1 -> {
-                    //like 
+                    facerMeGusta(publicacion);
                     }
                 case 2 -> {
                     escribirComentario(publicacion, perfil); }
@@ -300,8 +300,20 @@ public class XeradorMenus {
         publicacion.engadirComentario(comen);
     }
 
+    private void comprobarMeGusta(Perfil autor, Publicacion publicacion){
+        if(publicacion.getAutor().equals(autor)){
+            System.out.println("No puedes dar me gusta a tu propia pubblicación");
+            gestionPublicacion(autor,publicacion);
+        }else if(publicacion.getMeGusta().contains(autor)){
+            System.out.println("Ya has hecho me gusta a esta publicación");
+        }else{
+            publicacion.setMeGustaTemporal(autor);
+            facerMeGusta(publicacion);
+        }
+    }
+    
     private void facerMeGusta(Publicacion publicacion) {
-
+        publicacion.engadirMeGusta(publicacion.getMeGustaTemporal());
     }
 
     private void escribirMensaxe(Perfil remitente, Perfil destinatario) {

@@ -71,32 +71,65 @@ public class XeradorMenus {
         Scanner num = new Scanner(System.in);
         System.out.println("Biografia");
         for (int i = perfil.getPublicacions().size(); i > 0; i--) {
+            //recorre publicaciones ↑↑
+            
             if (perfil.getPublicacions().get(i).getAutor().getNome().equals(perfil.getNome())) {
+                // ↑↑si son tuyas
+                
                 System.out.println("Ti escribiches: ");
+                
             } else {
+                
+                // ↓↓si son de otro
                 System.out.println(perfil.getPublicacions().get(i).getAutor().getNome() + " escribiu: ");
             }
+            
+            //↓↓ fecha
             System.out.println(perfil.getPublicacions().get(i).getData());
+            //↓↓ texto
             System.out.println((i + 1) + ". " + perfil.getPublicacions().get(i).getTexto());
+            
+            //recorrer comentarios ↓↓
             for (int j = perfil.getPublicacions().get(i).getComentarios().size(); j >= 0; j++) {
+                //nombre ↓↓
                 System.out.println(perfil.getPublicacions().get(i).getComentarios().get(j).getAutor().getNome());
+                //texto ↓↓
                 System.out.println(perfil.getPublicacions().get(i).getComentarios().get(j).getTexto());
             }
             System.out.println("Tiene " + perfil.getPublicacions().get(i).getMeGusta().size() + " me gusta");
-        }
+        }   //numero "me gusta" ↑↑
+        
         System.out.println("Número para gestionar publicación, 0 para volver al menú principal");
         eleccion = num.nextInt();
+        
         if(eleccion==0){
             mostrarMenuPrincipal(perfil);
         } else{
-            gestionPublicacion(perfil,eleccion);
+            gestionPublicacion(perfil, perfil.getPublicacions().get(eleccion-1));
         }
-        //escribirComentario(perfil, publicacion);
+        
 
     }
 
-    private void gestionPublicacion(Perfil perfil, int eleccion){
-        System.out.println();
+    private void gestionPublicacion(Perfil perfil, Publicacion publicacion){
+        int eleccion;
+        Scanner num = new Scanner(System.in);
+        System.out.println("Pulse 1 para escribir un comentario, 2 para darle like, 0 para volver al menú principal");
+        do {
+            eleccion = num.nextInt();
+            switch (eleccion) {
+                case 1 -> {
+                    //like 
+                    }
+                case 2 -> {
+                    escribirComentario(publicacion, perfil); }
+                case 0 ->
+                    mostrarMenuPrincipal(perfil);
+                default -> {
+                }
+            }
+        } while (eleccion < 3 || eleccion > 5);
+        
     }
     
     public void mostrarSolicitudesDeAmizade(Perfil perfil) {
@@ -260,9 +293,11 @@ public class XeradorMenus {
 
     private void escribirComentario(Publicacion publicacion, Perfil perfil) {
         Scanner leer = new Scanner(System.in);
+        System.out.println("Escribe tu comentario");
         String patata = leer.nextLine();
-        Comentario texto = new Comentario(patata);
-        publicacion.engadirComentario(texto);
+        Comentario comen = new Comentario(patata);
+        comen.setAutor(perfil);
+        publicacion.engadirComentario(comen);
     }
 
     private void facerMeGusta(Publicacion publicacion) {

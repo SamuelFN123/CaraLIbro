@@ -19,7 +19,7 @@ public class Comentario {
     public Comentario(String texto) {
         this.texto = texto;
         this.data = data.now().withSecond(0).withNano(0);
-        //this.autor =
+        
     }
 
     public String getTexto() {

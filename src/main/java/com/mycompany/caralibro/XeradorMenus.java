@@ -32,7 +32,6 @@ public class XeradorMenus {
             default ->{
             }
         }
-
     }
 
     public void mostrarMenuPrincipal(Perfil perfil) {

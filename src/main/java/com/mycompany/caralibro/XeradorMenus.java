@@ -12,6 +12,8 @@ import java.util.Scanner;
  */
 public class XeradorMenus {
 
+    static private Perfil sesion;
+    
     public void mostrarMenuInicial() {
         int eleccion;
         Scanner num = new Scanner(System.in);
@@ -51,7 +53,7 @@ public class XeradorMenus {
             case 1 ->
                 cambiarEstado(perfil);                      //hecho
             case 2 ->
-                mostrarBiografia(perfil);                   //hecho
+                mostrarBiografia(sesion);             //hecho
             case 3 ->
                 mostrarSolicitudesDeAmizade(perfil);        //hecho
             case 4 ->
@@ -122,7 +124,7 @@ public class XeradorMenus {
             } while (eleccion > perfil.getPublicacions().size());
 
             if (eleccion == 0) {
-                mostrarMenuPrincipal(perfil);
+                mostrarMenuPrincipal(sesion);
             } else {
                 gestionPublicacion(perfil, perfil.getPublicacions().get(eleccion - 1));
             }
@@ -248,22 +250,23 @@ public class XeradorMenus {
                 System.out.println(perfil.getAmigos().get(i).getEstado());
             }
 
-            int eleccion;
+            int eleccion1;
             do {
                 System.out.println("Escribe el número para enviar mensaje");
-                eleccion = (num.nextInt() - 1);
-            } while (eleccion <= perfil.getAmigos().size());
+                eleccion1 = (num.nextInt() - 1);
+            } while (eleccion1 <= perfil.getAmigos().size());
 
+            int eleccion2;
             do {
                 System.out.println("Escribe 1 para enviar una mensaje o 2 para ver su biografía");
+                eleccion2 = num.nextInt();
+            } while (eleccion2 < 1 || eleccion2 > 2);
 
-                eleccion = num.nextInt();
-                if (eleccion == 1) {
-                    escribirMensaxe(perfil, perfil.getAmigos().get(eleccion));
-                } else if (eleccion == 2) {
-                    mostrarBiografia(perfil.getAmigos().get(eleccion));
-                }
-            } while (eleccion < 0 || eleccion > 2);
+            if (eleccion1 == 1) {
+                escribirMensaxe(perfil, perfil.getAmigos().get(eleccion1));
+            } else if (eleccion1 == 2) {
+                mostrarBiografia(perfil.getAmigos().get(eleccion1));
+            }
         }
     }
 
@@ -304,7 +307,7 @@ public class XeradorMenus {
             System.out.println("3. Responder");
             eleccion = leer.nextInt();
         } while (eleccion < 1 || eleccion > 3);
-        
+
         switch (eleccion) {
             case 1 -> {
                 marcarMensaxeComoLida(perfil.getMensaxes().get(MensaxeElexido));
@@ -367,6 +370,7 @@ public class XeradorMenus {
                 }
             } while (eleccion < 0 || eleccion > 1);
         } else {
+            sesion=CaraLibroBD.obterPerfil(nome, contraseña);
             mostrarMenuPrincipal(CaraLibroBD.obterPerfil(nome, contraseña));
         }
     }
@@ -380,15 +384,15 @@ public class XeradorMenus {
             System.out.println("¿Deseas cambiar el estado? 1:Si, 2:No");
             eleccion = num.nextInt();
         } while (eleccion < 1 || eleccion > 2);
-            if (eleccion == 1) {
-                System.out.print("Nuevo estado: ");
-                perfil.setEstado(est.nextLine());
-                mostrarMenuPrincipal(perfil);
-            }
-            if (eleccion == 2) {
-                mostrarMenuPrincipal(perfil);
-            }
-        
+        if (eleccion == 1) {
+            System.out.print("Nuevo estado: ");
+            perfil.setEstado(est.nextLine());
+            mostrarMenuPrincipal(perfil);
+        }
+        if (eleccion == 2) {
+            mostrarMenuPrincipal(perfil);
+        }
+
     }
 
     private void escribirComentario(Publicacion publicacion, Perfil perfil) {
@@ -408,13 +412,12 @@ public class XeradorMenus {
         } else if (publicacion.getMeGusta().contains(autor)) {
             System.out.println("Ya has hecho me gusta a esta publicación");
         } else {
-            publicacion.setMeGustaTemporal(autor);
             facerMeGusta(publicacion);
         }
     }
 
     private void facerMeGusta(Publicacion publicacion) {
-        publicacion.engadirMeGusta(publicacion.getMeGustaTemporal());
+        publicacion.engadirMeGusta(sesion);
     }
 
     private void escribirMensaxe(Perfil remitente, Perfil destinatario) {

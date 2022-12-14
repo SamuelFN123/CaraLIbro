@@ -17,7 +17,6 @@ public class Publicacion {
     private ArrayList<Comentario> comentarios = new ArrayList();
     private LocalDateTime data;
     private Perfil Autor;
-    private Perfil MeGustaTemporal;
     private ArrayList<Perfil> MeGusta = new ArrayList();
 
     public Publicacion(Perfil autor, String texto) {
@@ -44,12 +43,6 @@ public class Publicacion {
 
     public Perfil getAutor() {
         return Autor;
-    }
-    public void setMeGustaTemporal(Perfil MeGustaTemporal) {
-        this.MeGustaTemporal = MeGustaTemporal;
-    }
-    public Perfil getMeGustaTemporal() {
-        return MeGustaTemporal;
     }
 
     public void engadirComentario(Comentario comentario) {

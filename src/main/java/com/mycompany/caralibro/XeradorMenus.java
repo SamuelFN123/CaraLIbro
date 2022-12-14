@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 /**
  *
- * @author a22manuelmf
+ * @author a22manuelmf,a22samuelfn
  */
 public class XeradorMenus {
 

@@ -12,7 +12,7 @@ import java.util.Scanner;
  */
 public class XeradorMenus {
 
-    static private Perfil sesion;
+    private Perfil sesion;
     
     public void mostrarMenuInicial() {
         int eleccion;
@@ -29,8 +29,8 @@ public class XeradorMenus {
                 iniciarSesion();
             case 2 ->
                 crearPerfil();
-            default ->
-                System.out.println("Ese número no es válido");
+            default ->{
+            }
         }
 
     }
@@ -57,7 +57,7 @@ public class XeradorMenus {
             case 3 ->
                 mostrarSolicitudesDeAmizade(perfil);        //hecho
             case 4 ->
-                mostrarListaAmigos(perfil);                 //problema
+                mostrarListaAmigos(perfil);                 //hecho
             case 5 ->
                 mostrarMensaxes(perfil);                    //hecho
             case 6 ->
@@ -325,7 +325,7 @@ public class XeradorMenus {
         }
     }
 
-    public void pecharSesion(Perfil perfil) {
+    public void pecharSesion(Perfil perfil) {        
         mostrarMenuInicial();
     }
 

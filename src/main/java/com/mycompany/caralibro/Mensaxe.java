@@ -9,11 +9,13 @@ import java.time.LocalDateTime;
  * @author a22manuelmf
  */
 public class Mensaxe {
+    //atributos de la clase Mensaxe
     private String texto;
     private boolean lido;
     private Perfil remitente;
     private LocalDateTime data;
     
+    //constructor de la clase Mensaxe
     public Mensaxe(String texto, Perfil remitente) {
         this.texto = texto;
         this.remitente = remitente;
@@ -21,6 +23,7 @@ public class Mensaxe {
         this.lido = false;
     }    
 
+    //geter y seter de la clase Mensaxe
     public String getTexto() {
         return texto;
     }

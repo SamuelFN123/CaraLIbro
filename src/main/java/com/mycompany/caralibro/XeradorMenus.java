@@ -11,9 +11,11 @@ import java.util.Scanner;
  * @author a22manuelmf,a22samuelfn
  */
 public class XeradorMenus {
-
+    
+    //atributos de la clase XeradorMenus 
     private Perfil sesion;
     
+    //método que muestra las opciones de incio de sesion y darse de alta
     public void mostrarMenuInicial() {
         int eleccion;
         Scanner num = new Scanner(System.in);
@@ -34,6 +36,7 @@ public class XeradorMenus {
         }
     }
 
+    //El método mostrarMenuPrincipal  muestra por pantalla las opciones que tiene el menú principal y envia al cliente al método correspondiente con la opción selecionada
     public void mostrarMenuPrincipal(Perfil perfil) {
         int eleccion;
         Scanner num = new Scanner(System.in);
@@ -50,22 +53,23 @@ public class XeradorMenus {
 
         switch (eleccion) {
             case 1 ->
-                cambiarEstado(perfil);                      //hecho
+                cambiarEstado(sesion);                      //hecho
             case 2 ->
                 mostrarBiografia(sesion);             //hecho
             case 3 ->
-                mostrarSolicitudesDeAmizade(perfil);        //hecho
+                mostrarSolicitudesDeAmizade(sesion);        //hecho
             case 4 ->
-                mostrarListaAmigos(perfil);                 //hecho
+                mostrarListaAmigos(sesion);                 //hecho
             case 5 ->
-                mostrarMensaxes(perfil);                    //hecho
+                mostrarMensaxes(sesion);                    //hecho
             case 6 ->
-                pecharSesion(perfil);                       //hecho
+                pecharSesion(sesion);                       //hecho
             default -> {
             }
         }
     }
 
+    //método que muestra por pantalla la biografia del perfil
     public void mostrarBiografia(Perfil perfil) {
         int eleccion;
         Scanner num = new Scanner(System.in);
@@ -130,18 +134,20 @@ public class XeradorMenus {
         }
 
     }
-
+    
+    //método que crea una nueva publicación en el perfil
     private void crearPublicacion(Perfil autor) {
         String texto;
         Scanner leer = new Scanner(System.in);
         System.out.println("Que quieres escribir");
         texto = leer.nextLine();
-        Publicacion pub = new Publicacion(autor, texto);
+        Publicacion pub = new Publicacion(sesion, texto);
         autor.getPublicacions().add(pub);
-        mostrarMenuPrincipal(autor);
+        mostrarMenuPrincipal(sesion);
     }
-
-    private void gestionPublicacion(Perfil perfil, Publicacion publicacion) {
+    
+    //método que gestiona una publicación del perfil
+    private void gestionPublicacion(Perfil sesion, Publicacion publicacion) {
         int eleccion;
         Scanner num = new Scanner(System.in);
         do {
@@ -151,18 +157,19 @@ public class XeradorMenus {
 
         switch (eleccion) {
             case 1 -> {
-                comprobarMeGusta(perfil, publicacion);
+                comprobarMeGusta(sesion, publicacion);
             }
             case 2 -> {
-                escribirComentario(publicacion, perfil);
+                escribirComentario(publicacion, sesion);
             }
             case 0 ->
-                mostrarMenuPrincipal(perfil);
+                mostrarMenuPrincipal(sesion);
             default -> {
             }
         }
     }
 
+    //método que muestra las solicitudes de amistad del perfil
     public void mostrarSolicitudesDeAmizade(Perfil perfil) {
         int eleccion;
         Scanner num = new Scanner(System.in);
@@ -187,6 +194,7 @@ public class XeradorMenus {
         }
     }
 
+    //método que gestiona las solcitudes de amistad de un perfil ya sea aceptarlas o rechazarlas
     private void gestionSolicitudes(Perfil perfil) {
         int eleccion;
         Scanner num = new Scanner(System.in);
@@ -211,6 +219,7 @@ public class XeradorMenus {
         }
     }
 
+    //método que crea una solicitud de amistad y se la envia al perfil deseado
     private void crearSolicitude(Perfil perfil) {
         Scanner leer = new Scanner(System.in);
         System.out.println("Que perfil queres engadir de amigo");
@@ -235,6 +244,7 @@ public class XeradorMenus {
         }
     }
 
+    //método que muestra la lista de amigos del perfil
     public void mostrarListaAmigos(Perfil perfil) {
         Scanner num = new Scanner(System.in);
         System.out.println("Amigos");
@@ -269,6 +279,7 @@ public class XeradorMenus {
         }
     }
 
+    //Método que muestra los mensajes del perfil
     public void mostrarMensaxes(Perfil perfil) {
         Scanner leer = new Scanner(System.in);
         System.out.println("Mensaxes");
@@ -295,7 +306,8 @@ public class XeradorMenus {
             xestionMensaxes(eleccion, perfil);
         }
     }
-
+    
+    //método que se encarga de la gestión de los mensajes del perfil 
     private void xestionMensaxes(int MensaxeElexido, Perfil perfil) {
         Scanner leer = new Scanner(System.in);
         int eleccion;
@@ -324,10 +336,12 @@ public class XeradorMenus {
         }
     }
 
+    //método que cierra la sesión del perfil
     public void pecharSesion(Perfil perfil) {        
         mostrarMenuInicial();
     }
 
+    //método que sirve para crear un nuevo perfil
     private void crearPerfil() {
         Scanner leer = new Scanner(System.in);
         String nombre;
@@ -348,6 +362,7 @@ public class XeradorMenus {
         } while (!(contraseña.equals(contraseña2)));
     }
 
+    //método para iniciar sesión con un perfil creado anteriormente
     private void iniciarSesion() {
         Scanner leer = new Scanner(System.in);
         String nome;
@@ -374,6 +389,7 @@ public class XeradorMenus {
         }
     }
 
+    //método para cambiar el estado de tú perfil
     private void cambiarEstado(Perfil perfil) {
         Scanner est = new Scanner(System.in);
         Scanner num = new Scanner(System.in);
@@ -394,6 +410,7 @@ public class XeradorMenus {
 
     }
 
+    //método que sirve para escribir un comentario en una publicación
     private void escribirComentario(Publicacion publicacion, Perfil perfil) {
         Scanner leer = new Scanner(System.in);
         System.out.println("Escribe tu comentario");
@@ -403,7 +420,8 @@ public class XeradorMenus {
         publicacion.engadirComentario(comen);
         mostrarMenuPrincipal(perfil);
     }
-
+    
+    //método que comprueba si una publicación tiene me gustas 
     private void comprobarMeGusta(Perfil autor, Publicacion publicacion) {
         if (publicacion.getAutor().equals(autor)) {
             System.out.println("No puedes dar me gusta a tu propia pubblicación");
@@ -415,10 +433,12 @@ public class XeradorMenus {
         }
     }
 
+    //método que se encarga de darle me gusta a una publicación
     private void facerMeGusta(Publicacion publicacion) {
         publicacion.engadirMeGusta(sesion);
     }
 
+    //método que se encarga de escribir un mensaje a un perfil
     private void escribirMensaxe(Perfil remitente, Perfil destinatario) {
         Scanner leer = new Scanner(System.in);
         System.out.println("Escribe tu mensaje para" + destinatario.getNome());
@@ -426,11 +446,13 @@ public class XeradorMenus {
         destinatario.engadirMensaxePrivada(men);
         mostrarMenuPrincipal(remitente);
     }
-
+    
+    //método que se encarga de marcar cuando un mensaje ha sido leido
     private void marcarMensaxeComoLida(Mensaxe mensaxe) {
         mensaxe.setLido(true);
     }
 
+    //método que sirve para eliminar un mensaje del chat
     private void eliminarMensaxe(Perfil perfil, Mensaxe mensaxe) {
         perfil.getMensaxes().remove(mensaxe);
     }

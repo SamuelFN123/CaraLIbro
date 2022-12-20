@@ -12,6 +12,7 @@ import java.util.ArrayList;
  */
 public final class CaraLibroBD {
 
+    //atributos de la clase CaraLibroBD
     private static ArrayList<Perfil> perfis = new ArrayList();
 
     static public Perfil obterPerfil(String nome, String contrasinal) {
@@ -28,6 +29,7 @@ public final class CaraLibroBD {
         return null;
     }
     
+    //método encargado de buscar un perfil
     static public Perfil buscarPerfil(String nome){
         for (int i = 0; i < perfis.size(); i++) {
              //Recorrer Array perfiles ↑↑
@@ -39,6 +41,7 @@ public final class CaraLibroBD {
         return null;
     }
     
+    //este método se encarga de añadir un perfil nuevo a el arraylist de perfiles
     static public void engadirPerfil(Perfil novoPerfil){
         perfis.add(novoPerfil);
     }

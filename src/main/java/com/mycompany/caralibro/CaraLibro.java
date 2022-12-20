@@ -13,7 +13,9 @@ public class CaraLibro {
 
     public static void main(String[] args) {
         
+        //crea un nuevo objeto XerandorMenus 
         XeradorMenus on = new XeradorMenus();
+        //inicia el metodo mostrarMenuInicial del objeto creado anteriormente
         on.mostrarMenuInicial();
         
         

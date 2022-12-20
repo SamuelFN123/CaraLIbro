@@ -11,17 +11,20 @@ import java.time.LocalDateTime;
  * @author a22manuelmf
  */
 public class Comentario {
-
+    
+    //atributos de la clase Comentario
     private String texto;
     private LocalDateTime data;
     private Perfil autor;
 
+    //contructor de la clase Comentario
     public Comentario(String texto) {
         this.texto = texto;
         this.data = data.now().withSecond(0).withNano(0);
         
     }
 
+    //geter y seter de la clase Comentario
     public String getTexto() {
         return texto;
     }
